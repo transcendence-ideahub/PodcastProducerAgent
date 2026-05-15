@@ -34,76 +34,83 @@ st.markdown("""
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+        background: #020617; /* Solid dark base to prevent flickering */
+        background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         z-index: 999999;
-        animation: fadeOut 1s ease-in-out 2.5s forwards;
+        animation: fadeOut 1.2s ease-in-out 3.5s forwards;
     }
 
     .pulse-logo {
-        width: 140px;
-        height: 140px;
-        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-        border-radius: 40px;
+        width: 160px;
+        height: 160px;
+        background: linear-gradient(135deg, #60a5fa, #c084fc);
+        border-radius: 45px;
         display: flex;
         justify-content: center;
         align-items: center;
-        box-shadow: 0 0 60px rgba(59, 130, 246, 0.4);
-        animation: pulse 2.5s infinite;
+        box-shadow: 0 0 80px rgba(96, 165, 250, 0.6);
+        animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
         margin-bottom: 30px;
-        transform: rotate(-5deg);
+        border: 2px solid rgba(255, 255, 255, 0.2);
     }
 
     .pulse-logo svg {
-        width: 80px;
-        height: 80px;
+        width: 90px;
+        height: 90px;
         fill: white;
+        filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
     }
 
     .loading-text {
-        color: white;
+        color: #f8fafc;
         font-family: 'Inter', system-ui, sans-serif;
-        font-size: 32px;
-        font-weight: 800;
-        letter-spacing: -0.5px;
+        font-size: 42px;
+        font-weight: 900;
+        letter-spacing: -1px;
         opacity: 0;
-        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+        text-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+        animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
     }
 
     .sub-text {
-        color: rgba(255,255,255,0.5);
+        color: #94a3b8;
         font-family: 'Inter', sans-serif;
-        font-size: 16px;
-        margin-top: 12px;
-        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+        font-size: 18px;
+        font-weight: 500;
+        margin-top: 15px;
+        letter-spacing: 4px;
+        animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
         opacity: 0;
+        text-transform: uppercase;
     }
 
     .loading-bar-container {
-        width: 200px;
-        height: 4px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 10px;
-        margin-top: 40px;
+        width: 250px;
+        height: 6px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 20px;
+        margin-top: 50px;
         overflow: hidden;
         opacity: 0;
-        animation: fadeIn 0.5s ease 0.8s forwards;
+        border: 1px solid rgba(255,255,255,0.1);
+        animation: fadeIn 0.5s ease 1s forwards;
     }
 
     .loading-bar-progress {
         width: 0%;
         height: 100%;
-        background: #3b82f6;
-        animation: progressLoad 2.2s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        animation: progressLoad 3.2s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
     }
 
     @keyframes pulse {
-        0% { transform: scale(1) rotate(-5deg); filter: brightness(1); }
-        50% { transform: scale(1.05) rotate(0deg); filter: brightness(1.2); }
-        100% { transform: scale(1) rotate(-5deg); filter: brightness(1); }
+        0% { transform: scale(1); box-shadow: 0 0 60px rgba(96, 165, 250, 0.4); }
+        50% { transform: scale(1.1); box-shadow: 0 0 100px rgba(96, 165, 250, 0.8); }
+        100% { transform: scale(1); box-shadow: 0 0 60px rgba(96, 165, 250, 0.4); }
     }
 
     @keyframes fadeOut {
@@ -112,7 +119,7 @@ st.markdown("""
     }
 
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
+        from { opacity: 0; transform: translateY(40px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
@@ -128,7 +135,7 @@ st.markdown("""
 
     /* Main App Reveal Animation */
     .stApp {
-        animation: revealApp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2.8s both;
+        animation: revealApp 1.5s cubic-bezier(0.16, 1, 0.3, 1) 3.8s both;
     }
 
     @keyframes revealApp {
