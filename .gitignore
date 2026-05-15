@@ -1,0 +1,12 @@
+.env
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+uploads/*
+outputs/*
+reports/*
+.streamlit/
+!uploads/.gitkeep
+!outputs/.gitkeep
+!reports/.gitkeep
