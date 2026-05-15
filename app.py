@@ -73,10 +73,18 @@ st.markdown("""
 import time
 import json
 from dotenv import load_dotenv
-# --- HEAVY IMPORTS DEFERRED ---
-# We move these inside functions to make the app start instantly!
-import json
-from dotenv import load_dotenv
+from utils.helpers import setup_directories, cleanup_directories
+from utils.audio_cleaner import clean_audio
+from agents.transcription_agent import transcribe_audio
+from agents.title_agent import generate_titles
+from agents.summary_agent import generate_summary
+from agents.show_notes_agent import generate_show_notes
+from agents.highlight_agent import generate_highlights
+from agents.social_media_agent import generate_social_media
+from agents.seo_agent import generate_seo
+from utils.analytics import generate_wordcloud, analyze_topics
+from utils.exporters import export_pdf, export_json, export_markdown, export_txt, create_zip_package
+from utils.db import save_podcast_data, get_all_podcast_data, delete_podcast_data
 
 # Load environment variables
 load_dotenv()
@@ -100,7 +108,7 @@ st.markdown("""
         justify-content: center;
         align-items: center;
         z-index: 999999;
-        animation: fadeOut 1.5s ease-in-out 6.5s forwards;
+        animation: fadeOut 0.8s ease-in-out 1.5s forwards;
     }
 
     .pulse-logo {
@@ -132,7 +140,7 @@ st.markdown("""
         letter-spacing: -1px;
         opacity: 0;
         text-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
-        animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
     }
 
     .sub-text {
@@ -142,7 +150,7 @@ st.markdown("""
         font-weight: 500;
         margin-top: 15px;
         letter-spacing: 4px;
-        animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
         opacity: 0;
         text-transform: uppercase;
     }
@@ -156,14 +164,14 @@ st.markdown("""
         overflow: hidden;
         opacity: 0;
         border: 1px solid rgba(255,255,255,0.1);
-        animation: fadeIn 0.5s ease 1.5s forwards;
+        animation: fadeIn 0.5s ease 0.5s forwards;
     }
 
     .loading-bar-progress {
         width: 0%;
         height: 100%;
         background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-        animation: progressLoad 6.2s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+        animation: progressLoad 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
     }
 
     @keyframes pulse {
@@ -194,7 +202,7 @@ st.markdown("""
 
     /* Main App Reveal Animation */
     .stApp {
-        animation: revealApp 1.5s cubic-bezier(0.16, 1, 0.3, 1) 6.8s both;
+        animation: revealApp 1s cubic-bezier(0.16, 1, 0.3, 1) 1.5s both;
     }
 
     @keyframes revealApp {
@@ -337,7 +345,6 @@ def add_agent_log(msg: str):
         st.session_state['agent_logs'].pop()
 
 initialize_session_state()
-from utils.helpers import setup_directories
 setup_directories()
 
 # --- Sidebar ---
@@ -350,7 +357,6 @@ silence_thresh = st.sidebar.slider("Silence Threshold (dBFS)", min_value=-70, ma
 min_silence_len = st.sidebar.slider("Min Silence Length (ms)", min_value=500, max_value=3000, value=1500, step=100)
 
 if st.sidebar.button("🚀 Load Demo Project", type="primary", use_container_width=True):
-    from utils.analytics import generate_wordcloud, analyze_topics
     # Hardcoded high-quality demo data
     st.session_state['project_name'] = "Demo: The Future of AI Banking"
     st.session_state['transcript'] = """[00:00] **Host (Mrs. Clark):** Good afternoon. You must be Mr. Wang. It's a pleasure to meet you.
@@ -447,16 +453,6 @@ with tab_upload:
                 st.error("Groq API Key not found. Please ensure it is set in your .env file.")
             else:
                 try:
-                    from utils.audio_cleaner import clean_audio
-                    from agents.transcription_agent import transcribe_audio
-                    from agents.title_agent import generate_titles
-                    from agents.summary_agent import generate_summary
-                    from agents.show_notes_agent import generate_show_notes
-                    from agents.highlight_agent import generate_highlights
-                    from agents.social_media_agent import generate_social_media
-                    from agents.seo_agent import generate_seo
-                    from utils.db import save_podcast_data
-                    
                     progress_bar = st.progress(0, text="Initializing Pipeline...")
                     
                     progress_bar.progress(10, text="Step 1/7: Cleaning audio (Removing silences)...")
@@ -714,7 +710,6 @@ with tab_export:
                     "social_media": st.session_state.get('social_media', {}),
                     "seo_tags": st.session_state.get('seo', {})
                 }
-                from utils.exporters import export_pdf, export_json, export_markdown, export_txt, create_zip_package
                 
                 # Paths
                 pdf_path = os.path.join("reports", "report.pdf")
