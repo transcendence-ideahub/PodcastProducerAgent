@@ -418,12 +418,17 @@ with tab_social:
         st.subheader("SEO Metadata")
         if st.session_state['seo']:
             seo = st.session_state['seo']
+            st.markdown(f"**Keywords:** {', '.join(seo.get('keywords', []))}")
+            st.markdown(f"**Description:** {seo.get('description', 'N/A')}")
+            
             seo_str = json.dumps(seo, indent=2)
-            edited_seo = st.text_area("SEO JSON (Editable)", value=seo_str, height=400)
+            edited_seo = st.text_area("Edit SEO JSON", value=seo_str, height=250)
             try:
                 st.session_state['seo'] = json.loads(edited_seo)
             except:
                 st.error("Invalid JSON format.")
+        else:
+            st.info("SEO Metadata will appear here after processing.")
 
 # --- 6. Analytics ---
 with tab_analytics:
