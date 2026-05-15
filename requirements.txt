@@ -1,7 +1,6 @@
 streamlit
 groq
 pydub
-audioop-lts
 ffmpeg-python
 reportlab
 python-dotenv
