@@ -1,8 +1,75 @@
 import os
-# Fix for IPv6 gRPC connection issues on Mac
-os.environ["GRPC_DNS_RESOLVER"] = "native"
-# pyrefly: ignore [missing-import]
 import streamlit as st
+
+# --- 0. FAST RENDER SPLASH SCREEN ---
+# We do this BEFORE heavy imports so it shows up instantly!
+st.set_page_config(page_title="Podcast Producer Agent", layout="wide", page_icon="🎙️")
+
+st.markdown("""
+<style>
+    #splash-screen {
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        background: #020617;
+        background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        z-index: 999999;
+        animation: fadeOut 1.5s ease-in-out 6s forwards;
+    }
+    .pulse-logo {
+        width: 160px; height: 160px;
+        background: linear-gradient(135deg, #60a5fa, #c084fc);
+        border-radius: 45px;
+        display: flex; justify-content: center; align-items: center;
+        box-shadow: 0 0 80px rgba(96, 165, 250, 0.6);
+        animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        margin-bottom: 30px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .pulse-logo svg { width: 90px; height: 90px; fill: white; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+    .loading-text {
+        color: #f8fafc; font-family: 'Inter', sans-serif; font-size: 42px; font-weight: 900;
+        letter-spacing: -1px; opacity: 0;
+        animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+    }
+    .sub-text {
+        color: #94a3b8; font-family: 'Inter', sans-serif; font-size: 18px;
+        margin-top: 15px; letter-spacing: 4px; opacity: 0;
+        animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+        text-transform: uppercase;
+    }
+    .loading-bar-container {
+        width: 250px; height: 6px; background: rgba(255,255,255,0.05);
+        border-radius: 20px; margin-top: 50px; overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    .loading-bar-progress {
+        width: 0%; height: 100%;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        animation: progressLoad 6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); box-shadow: 0 0 60px rgba(96, 165, 250, 0.4); }
+        50% { transform: scale(1.1); box-shadow: 0 0 100px rgba(96, 165, 250, 0.8); }
+        100% { transform: scale(1); box-shadow: 0 0 60px rgba(96, 165, 250, 0.4); }
+    }
+    @keyframes fadeOut { from { opacity: 1; visibility: visible; } to { opacity: 0; visibility: hidden; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes progressLoad { from { width: 0%; } to { width: 100%; } }
+    .stApp { animation: revealApp 1.5s cubic-bezier(0.16, 1, 0.3, 1) 6.5s both; }
+    @keyframes revealApp { from { opacity: 0; transform: scale(0.98); filter: blur(15px); } to { opacity: 1; transform: scale(1); filter: blur(0); } }
+</style>
+<div id="splash-screen">
+    <div class="pulse-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+    </div>
+    <div class="loading-text">PODCAST PRODUCER</div>
+    <div class="sub-text">AGENTIC POST-PRODUCTION SUITE</div>
+    <div class="loading-bar-container"><div class="loading-bar-progress"></div></div>
+</div>
+""", unsafe_allow_html=True)
+
+# --- HEAVY IMPORTS START HERE ---
 import time
 import json
 from dotenv import load_dotenv
