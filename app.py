@@ -177,8 +177,25 @@ if st.sidebar.button("🚀 Load Demo Project", type="primary", use_container_wid
         "executive_summary": "This episode captures a professional job interview between Mrs. Clark and Mr. Wang. We explore Mr. Wang's background in China, his transition to the US, and his ambitious goals in the banking sector."
     }
     st.session_state['show_notes'] = {"show_notes": "1. Introduction\n2. Career Background\n3. Core Strengths\n4. Future Aspirations"}
-    st.session_state['social_media'] = {"twitter_thread": ["Excited to share our latest interview with Mr. Wang!", "We talk about the challenges of moving countries and starting a new career path."]}
-    st.session_state['seo'] = {"keywords": ["banking interview", "career growth", "accounting journey"]}
+    st.session_state['social_media'] = {
+        "linkedin": "In this episode, we explore the future of AI in podcasting with a bank teller candidate. A fascinating look at strengths and weaknesses.",
+        "twitter_thread": [
+            "1/5 Excited to share our latest interview! #AI #Podcasting",
+            "2/5 Our guest discusses the balance between technical skill and empathy.",
+            "3/5 What makes a great candidate in 2026?"
+        ],
+        "instagram": "Behind the scenes of our latest high-tech interview. #PodcastLife"
+    }
+    st.session_state['seo'] = {
+        "keywords": ["AI", "Interview", "Banking", "Career Growth", "Podcasting"],
+        "description": "A deep dive into the world of job interviews in the age of AI. Featuring a bank teller candidate sharing career insights."
+    }
+    st.session_state['highlights'] = [
+        {"time": "00:00", "text": "Introduction & Welcome"},
+        {"time": "01:45", "text": "The Candidate's Background"},
+        {"time": "05:20", "text": "Strengths & Weaknesses Discussion"},
+        {"time": "12:10", "text": "Future Career Goals"}
+    ]
     
     # Generate charts for demo
     st.session_state['wordcloud_img'] = generate_wordcloud(st.session_state['transcript'])
@@ -459,12 +476,13 @@ with tab_analytics:
         m2.metric("Char Count", f"{char_count:,}")
         m3.metric("Est. Reading Time", f"{reading_time} min")
         
-        # Simple speaker distribution
-        speakers = {}
+        # Robust speaker distribution for professional formats
         import re
+        speakers = {}
         lines = text.split('\n')
         for line in lines:
-            match = re.match(r'^([^:]+):', line)
+            # Matches format: [00:00] **Speaker:** or **Speaker:** or Speaker:
+            match = re.search(r'(?:\*\*?|\[\d{2}:\d{2}\]\s+\*\*?)([^:*]+)(?:\*\*?)\s*:', line)
             if match:
                 s = match.group(1).strip()
                 speakers[s] = speakers.get(s, 0) + len(line.split())
