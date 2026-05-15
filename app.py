@@ -24,6 +24,132 @@ load_dotenv()
 
 st.set_page_config(page_title="Podcast Producer Agent", layout="wide", page_icon="🎙️")
 
+# --- 0. Splash Screen & Premium Styling ---
+st.markdown("""
+<style>
+    /* Splash Screen Overlay */
+    #splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 999999;
+        animation: fadeOut 1s ease-in-out 2.5s forwards;
+    }
+
+    .pulse-logo {
+        width: 140px;
+        height: 140px;
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        border-radius: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 60px rgba(59, 130, 246, 0.4);
+        animation: pulse 2.5s infinite;
+        margin-bottom: 30px;
+        transform: rotate(-5deg);
+    }
+
+    .pulse-logo svg {
+        width: 80px;
+        height: 80px;
+        fill: white;
+    }
+
+    .loading-text {
+        color: white;
+        font-family: 'Inter', system-ui, sans-serif;
+        font-size: 32px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        opacity: 0;
+        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    }
+
+    .sub-text {
+        color: rgba(255,255,255,0.5);
+        font-family: 'Inter', sans-serif;
+        font-size: 16px;
+        margin-top: 12px;
+        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+        opacity: 0;
+    }
+
+    .loading-bar-container {
+        width: 200px;
+        height: 4px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        margin-top: 40px;
+        overflow: hidden;
+        opacity: 0;
+        animation: fadeIn 0.5s ease 0.8s forwards;
+    }
+
+    .loading-bar-progress {
+        width: 0%;
+        height: 100%;
+        background: #3b82f6;
+        animation: progressLoad 2.2s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1) rotate(-5deg); filter: brightness(1); }
+        50% { transform: scale(1.05) rotate(0deg); filter: brightness(1.2); }
+        100% { transform: scale(1) rotate(-5deg); filter: brightness(1); }
+    }
+
+    @keyframes fadeOut {
+        from { opacity: 1; visibility: visible; }
+        to { opacity: 0; visibility: hidden; }
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes progressLoad {
+        0% { width: 0%; }
+        100% { width: 100%; }
+    }
+
+    /* Main App Reveal Animation */
+    .stApp {
+        animation: revealApp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2.8s both;
+    }
+
+    @keyframes revealApp {
+        from { opacity: 0; transform: scale(0.98); filter: blur(15px); }
+        to { opacity: 1; transform: scale(1); filter: blur(0); }
+    }
+</style>
+
+<div id="splash-screen">
+    <div class="pulse-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+    </div>
+    <div class="loading-text">PODCAST PRODUCER</div>
+    <div class="sub-text">AGENTIC POST-PRODUCTION SUITE</div>
+    <div class="loading-bar-container">
+        <div class="loading-bar-progress"></div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+
 # Custom CSS for Premium Aesthetics
 st.markdown("""
     <style>
