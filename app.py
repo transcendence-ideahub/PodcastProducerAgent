@@ -41,7 +41,7 @@ st.markdown("""
         justify-content: center;
         align-items: center;
         z-index: 999999;
-        animation: fadeOut 1.2s ease-in-out 3.5s forwards;
+        animation: fadeOut 1.5s ease-in-out 6.5s forwards;
     }
 
     .pulse-logo {
@@ -73,7 +73,7 @@ st.markdown("""
         letter-spacing: -1px;
         opacity: 0;
         text-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
-        animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+        animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
     }
 
     .sub-text {
@@ -83,7 +83,7 @@ st.markdown("""
         font-weight: 500;
         margin-top: 15px;
         letter-spacing: 4px;
-        animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+        animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
         opacity: 0;
         text-transform: uppercase;
     }
@@ -97,14 +97,14 @@ st.markdown("""
         overflow: hidden;
         opacity: 0;
         border: 1px solid rgba(255,255,255,0.1);
-        animation: fadeIn 0.5s ease 1s forwards;
+        animation: fadeIn 0.5s ease 1.5s forwards;
     }
 
     .loading-bar-progress {
         width: 0%;
         height: 100%;
         background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-        animation: progressLoad 3.2s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
+        animation: progressLoad 6.2s cubic-bezier(0.65, 0, 0.35, 1) 0.5s forwards;
     }
 
     @keyframes pulse {
@@ -135,7 +135,7 @@ st.markdown("""
 
     /* Main App Reveal Animation */
     .stApp {
-        animation: revealApp 1.5s cubic-bezier(0.16, 1, 0.3, 1) 3.8s both;
+        animation: revealApp 1.5s cubic-bezier(0.16, 1, 0.3, 1) 6.8s both;
     }
 
     @keyframes revealApp {
